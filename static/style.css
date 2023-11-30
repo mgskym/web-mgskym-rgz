@@ -1,0 +1,43 @@
+:root {
+    --surface-light: #ffffff;
+    --base-text: #020202;
+    --border: 1px solid;
+    --border-color: rgb(205, 205, 205);
+    --border-radius: 12px;
+    --primary-main: red;
+    --base-shadow: #1e1e1e;
+    --page-pading: 32px;
+    --page-content-maxwidth: 1000px;
+}
+
+body {
+    background-color: var(--surface-light);
+    color: var(--base-text);
+    font-family: 'Arial';
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    border-bottom: var(--border);
+    border-color: var(--border-color);
+    padding-right: var(--page-pading);
+    padding-left: var(--page-pading);
+}
+
+main {
+    padding-right: var(--page-pading);
+    padding-left: var(--page-pading);
+}
+
+.page-content {
+    max-width: var(--page-content-maxwidth);
+    background-color: grey;
+    margin-right: auto;
+    margin-left: auto;
+}
