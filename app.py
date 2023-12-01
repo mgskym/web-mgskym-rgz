@@ -21,5 +21,12 @@ db.init_app(app)
 
 @app.route('/')
 def main():
-    username = (users.query.first())
-    return render_template('main_list.html', username=username)
+    page_title = 'Лекарства'
+    username = 'Михаил'
+    data = (users.query.first())
+    return render_template(
+        'main_list.html',
+        data=data,
+        username=username,
+        page_title=page_title,
+    )

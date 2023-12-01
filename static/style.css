@@ -1,19 +1,21 @@
 :root {
     --surface-light: #ffffff;
-    --base-text: #020202;
+    --base-text: #1a1a1a;
     --border: 1px solid;
-    --border-color: rgb(205, 205, 205);
+    --border-color: rgb(232, 232, 232);
     --border-radius: 12px;
-    --primary-main: red;
+    --primary-main: #E12828;
+    --grayt-light: #f1f1f1;
     --base-shadow: #1e1e1e;
     --page-pading: 32px;
-    --page-content-maxwidth: 1000px;
+    --page-content-maxwidth: 1200px;
+    --box-shadow: 0px 4px 16px 0px rgba(23, 23, 23, 0.06);
 }
 
 body {
     background-color: var(--surface-light);
     color: var(--base-text);
-    font-family: 'Arial';
+    font-family: 'Montserrat';
     font-size: 15px;
     line-height: 24px;
     font-weight: 500;
@@ -21,13 +23,55 @@ body {
     padding: 0;
 }
 
+a {
+    color: var(--primary-main);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 44px;
+    margin-top: 72px;
+}
+
 header {
-    display: flex;
     align-items: center;
     border-bottom: var(--border);
     border-color: var(--border-color);
     padding-right: var(--page-pading);
     padding-left: var(--page-pading);
+    padding-top: 24px;
+    padding-bottom: 24px;
+    box-shadow: var(--box-shadow);
+}
+
+.header-container {
+    align-items: center;
+    max-width: var(--page-content-maxwidth);
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+}
+
+.nav-link {
+    margin-right: 24px;
+}
+
+.username {
+    color: var(--primary-main);
+}
+
+.logo {
+    margin-right: 64px;
+}
+
+footer {
+    bottom: 0;
+    margin-top: 32px;
+    max-height: 120px;
+    background-color: azure;
 }
 
 main {
@@ -37,7 +81,45 @@ main {
 
 .page-content {
     max-width: var(--page-content-maxwidth);
-    background-color: grey;
     margin-right: auto;
     margin-left: auto;
+}
+
+.card {
+    display: inline-block;
+    padding: 24px;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    border-color: var(--border-color);
+    background-color: var(--surface-light);
+    box-shadow: var(--box-shadow);
+    margin-right: 12px;
+    margin-bottom: 16px;
+    max-width: 600px;
+    min-width: 300px;
+    min-height: 120px;
+}
+
+.primary-button {
+    background-color: var(--primary-main);
+    color: var(--surface-light);
+    padding: 12px;
+    font-family: 'Montserrat';
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    border: 0;
+}
+
+.secondary-button {
+    background-color: var(--grayt-light);
+    color: var(--primary-main);
+    padding: 12px;
+    font-family: 'Montserrat';
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    border: 0;
 }
