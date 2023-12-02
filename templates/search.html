@@ -1,11 +1,42 @@
 {% extends "base.html" %}
 
 {% block main %}
-    {% for i in data %}
-        <div class="card">
-            <h3>{{ i.name }}</h3>
-            <div style="color: #828282; margin-top: 12px;">Осталось {{ i.count }} шт.</div>
-            <h2 style="margin-top: 24px;">{{ i.price }} ₽</h2>
+    <form class="search-area" method="POST">
+        <input name="name" style="width: 320px; margin-right: 4px;" type="text" placeholder="Введите название лекарства">
+        <input name="price_from" style="width: 120px; margin-right: 4px;" type="number" placeholder="Цена от" min="0" max="5000">
+        <input name="price_to" style="width: 120px; margin-right: 4px;" type="number" placeholder="Цена до" min="0" max="5000">
+        <label>
+            Только по рецепту
+            <input name="recipe" type="checkbox">
+        </label>
+        <button type="submit" class="primary-button">Найти</button>
+    </form>
+    {% if data %}
+        <div style="margin-bottom: 20px; color: #b3b3b3;">Результатов: {{ res_count }}</div>
+        <div class="cards">
+            {% for i in data %}
+                <div class="card">
+                    <div>
+                        <h3>{{ i.name }}</h3>
+                        <div style="color: #828282; margin-top: 12px;">
+                            {% if i.count == 0 %}
+                                <div style="color: red;">Отсутствует</div>
+                            {% else %}
+                                Осталось {{ i.count }} шт.
+                            {% endif %}
+                        </div>
+                        <div>
+                            {% if i.recipe_only %}
+                                <div style="color: #286fe1;">Только по рецепту</div>
+                            {% endif %}
+                        </div>
+                        <h2 style="margin-top: 24px;">{{ i.price }} ₽</h2>
+                    </div>
+                </div>
+            {% endfor %}
+            <button style="width: 100%; margin-top: 32px; margin-bottom: 64px;" class="secondary-button">Показать ещё</button>
         </div>
-    {% endfor %}
+    {% else %}
+        <h2 style="text-align: center; color: #a4a4a4; margin-top: 64px;">Нет результатов</h2>
+    {% endif %}
 {% endblock %}

@@ -40,12 +40,41 @@ def check_all():
     print(medicines_list)
     return "result in console!"
 
-@app.route("/search")
+@app.route("/search", methods=['POST', 'GET'])
 def search():
-    data = medicines_list = medicines.query.all()
-    return render_template(
-        'search.html',
-        data = data,
-        page_title = 'Поиск лекарств',
-        username = 'Михаил'
-    )
+    if request.method == 'GET':
+        data = medicines.query.all()
+        res_count = len(data)
+        return render_template(
+            'search.html',
+            data = data,
+            page_title = 'Поиск лекарств',
+            username = 'Михаил',
+            res_count = res_count
+        )
+    else:
+        name = request.form.get('name')
+        price_from = 0
+        price_to = 5000
+        if request.form.get('price_from') != '':
+            price_from = float(request.form.get('price_from'))
+        if request.form.get('price_to') != '':
+            price_to = float(request.form.get('price_to'))
+
+        recipe = request.form.get('recipe')
+        
+        data = medicines.query.filter(
+                medicines.price >= price_from,
+                medicines.price <= price_to,
+                medicines.name.ilike(f'%{name}%'),
+                medicines.recipe_only == recipe
+            ).all()[:10]
+        res_count = len(data)
+
+        return render_template(
+            'search.html',
+            data = data,
+            page_title = 'Поиск лекарств',
+            username = 'Михаил',
+            res_count = res_count
+        )
