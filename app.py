@@ -2,7 +2,7 @@ from flask import Flask, Blueprint, render_template, request, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from db import db
-from db.models import users
+from db.models import users, medicines
 
 
 app = Flask(__name__)
@@ -29,4 +29,23 @@ def main():
         data=data,
         username=username,
         page_title=page_title,
+    )
+
+@app.route("/check")
+def check_all():
+    users_list = users.query.all()
+    medicines_list = medicines.query.all()
+    print(users_list)
+    print()
+    print(medicines_list)
+    return "result in console!"
+
+@app.route("/search")
+def search():
+    data = medicines_list = medicines.query.all()
+    return render_template(
+        'search.html',
+        data = data,
+        page_title = 'Поиск лекарств',
+        username = 'Михаил'
     )

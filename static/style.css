@@ -6,6 +6,7 @@
     --border-radius: 12px;
     --primary-main: #E12828;
     --grayt-light: #f1f1f1;
+    --gray-text: #828282;
     --base-shadow: #1e1e1e;
     --page-pading: 32px;
     --page-content-maxwidth: 1200px;
@@ -34,6 +35,18 @@ h1 {
     font-weight: 700;
     margin-bottom: 44px;
     margin-top: 72px;
+}
+
+h2  {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 header {
@@ -96,8 +109,7 @@ main {
     margin-right: 12px;
     margin-bottom: 16px;
     max-width: 600px;
-    min-width: 300px;
-    min-height: 120px;
+    min-width: 40%;
 }
 
 .primary-button {
