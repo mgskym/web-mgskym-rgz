@@ -10,15 +10,27 @@
     <header>
         <div class="header-container">
             <div style="margin-right: auto; display: flex;">
-                <img class="logo" src="/static/logo.svg">
-                <nav>
-                    <a class="nav-link" href="">Каталог</a>
-                    <a class="nav-link" href="">Добавление</a>
-                </nav>
+                <a href="/search"><img class="logo" src="/static/logo.svg"></a>
+                {% if username == 'admin' %}
+                    <nav>
+                        <a href="/new" style="margin-right: 24px;">Добавление</a>
+                        <a href="/edit" style="margin-right: 24px;">Редактирование</a>
+                        <a href="/delete" style="margin-right: 24px;">Удаление</a>
+                    </nav>
+                {% else %}
+                {% endif %}
             </div>
-            <div class="username">
-                {{ username }}
-            </div>
+            {% if is_logged %}
+                <div style="display: flex;">
+                    <div class="username">
+                        {{ username }}
+                    </div>
+                    <div>
+                        <a href="/logout">Выход</a>
+                    </div>
+                </div>
+            {% else %}
+            {% endif %}
         </div>
     </header>
     <main>
@@ -27,10 +39,5 @@
             {% block main %}{% endblock %}
         </div>
     </main>
-    <!-- <footer>
-        <div>
-            Маглицкий Михаил, ФБИ-12
-        </div>
-    </footer> -->
 </body>
 </html>

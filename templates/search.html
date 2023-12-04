@@ -5,9 +5,9 @@
         <input name="name" style="width: 320px; margin-right: 4px;" type="text" placeholder="Введите название лекарства">
         <input name="price_from" style="width: 120px; margin-right: 4px;" type="number" placeholder="Цена от" min="0" max="5000">
         <input name="price_to" style="width: 120px; margin-right: 4px;" type="number" placeholder="Цена до" min="0" max="5000">
-        <label>
+        <label style="margin-left: 16px; ">
             Только по рецепту
-            <input name="recipe" type="checkbox">
+            <input style="margin-right: 32px;" name="recipe" type="checkbox">
         </label>
         <button type="submit" class="primary-button">Найти</button>
     </form>
@@ -30,7 +30,7 @@
                                 <div style="color: #286fe1;">Только по рецепту</div>
                             {% endif %}
                         </div>
-                        <h2 style="margin-top: 24px;">{{ i.price }} ₽</h2>
+                        <h2 style="margin-top: 16px;">{{ i.price }} ₽</h2>
                     </div>
                 </div>
             {% endfor %}

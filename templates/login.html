@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <form method="POST">
+        <label>Логин<br>
+            <input name="username" style="margin-bottom: 16px; margin-top: 8px; width: 320px;" type="text">
+        </label>
+        <br>
+        <label>Пароль<br>
+            <input name="password" style="margin-bottom: 16px; margin-top: 8px; width: 320px;" type="password">
+        </label><br>
+        <div class="errors">{{ errors }}</div><br>
+        <button style="width: 352px; margin-bottom: 32px;" class="primary-button" type="submit">Войти</button>
+        <div>Нет аккаунта? <span><a href="/register">Зарегистрируйтесь</a></span></div>
+    </form>
+{% endblock %}

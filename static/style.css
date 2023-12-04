@@ -13,6 +13,7 @@
     --box-shadow: 0px 4px 16px 0px rgba(23, 23, 23, 0.06);
 }
 
+
 body {
     background-color: var(--surface-light);
     color: var(--base-text);
@@ -73,7 +74,8 @@ header {
 }
 
 .username {
-    color: var(--primary-main);
+    color: var(--base-text);
+    margin-right: 16px;
 }
 
 .logo {
@@ -99,19 +101,26 @@ main {
 }
 
 .cards {
-    
+    align-items: top;
 }
 
 .card {
-    display: block;
+    display: inline-flex;
     padding: 24px;
     border: var(--border);
     border-radius: var(--border-radius);
     border-color: var(--border-color);
     background-color: var(--surface-light);
     box-shadow: var(--box-shadow);
-    width: 100%;
     margin-bottom: 16px;
+    width: 584px;
+    margin-right: 12px;
+    height: 200px;
+    box-sizing: border-box;
+}
+
+.errors {
+    color: var(--primary-main);
 }
 
 .search-area {
@@ -163,6 +172,10 @@ input {
     background-color: var(--grayt-light);
     border-radius: var(--border-radius);
     border: 0;
+}
+
+label {
+    color: var(--gray-text);
 }
 
 input::focused {
