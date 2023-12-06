@@ -57,7 +57,8 @@ def search():
             page_title = 'Поиск лекарств',
             username = username,
             res_count = res_count,
-            is_logged = True
+            is_logged = True,
+            len_data = len(data)
         )
     else:
         name = request.form.get('name')
@@ -86,7 +87,8 @@ def search():
             page_title = 'Поиск лекарств',
             username = username,
             res_count = res_count,
-            is_logged = True
+            is_logged = True,
+            len_data = len(data)
         )
 
 @app.route("/register", methods=['POST', 'GET'])
@@ -206,7 +208,7 @@ def new():
         if price_form != '':
             price_form = float(price_form)
         count_form = request.form.get("count")
-        if name_form == '' or patent_name_form == '' or recipe_form == '' or count_form == '':
+        if name_form == '' or patent_name_form == '' or recipe_form == '' or count_form == '' or price_form == '':
             errors = 'Заполните все поля!'
             return render_template("new.html",
                 page_title = 'Добавление лекарства',
@@ -298,7 +300,7 @@ def edit(medicine_id_edit):
         if price_form != '':
             price_form = float(price_form)
         count_form = request.form.get("count")
-        if name_form == '' or patent_name_form == '' or recipe_form == '' or count_form == '':
+        if name_form == '' or patent_name_form == '' or recipe_form == '' or count_form == '' or price_form == '':
             errors = 'Заполните все поля!'
             return render_template("edit.html",
                 page_title = f'Редактирование лекарства "{data_edit.name}"',

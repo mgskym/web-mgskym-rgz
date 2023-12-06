@@ -10,7 +10,7 @@
     --base-shadow: #1e1e1e;
     --page-pading: 32px;
     --page-content-maxwidth: 1200px;
-    --box-shadow: 0px 4px 16px 0px rgba(23, 23, 23, 0.06);
+    --box-shadow: 0px 4px 12px 0px rgba(23, 23, 23, 0.04);
 }
 
 
@@ -23,6 +23,7 @@ body {
     font-weight: 500;
     margin: 0;
     padding: 0;
+    margin-bottom: 64px;
 }
 
 a {
@@ -31,14 +32,21 @@ a {
     text-decoration: none;
 }
 
+a:hover {
+    color: #c92121;
+    transition: 0.3s;
+}
+
 h1 {
-    font-size: 42px;
+    font-size: 36px;
     font-weight: 700;
-    margin-bottom: 44px;
-    margin-top: 72px;
+    margin-bottom: 32px;
+    margin-top: 64px;
+    line-height: 56px;
 }
 
 h2  {
+    font-size: 26px;
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -74,12 +82,14 @@ header {
 }
 
 .username {
+    font-size: 18px;
+    font-weight: 600;
     color: var(--base-text);
-    margin-right: 16px;
+    margin-right: 24px;
 }
 
 .logo {
-    margin-right: 64px;
+    margin-right: 48px;
 }
 
 footer {
@@ -102,6 +112,7 @@ main {
 
 .cards {
     align-items: top;
+    overflow: hidden;
 }
 
 .card {
@@ -113,7 +124,7 @@ main {
     background-color: var(--surface-light);
     box-shadow: var(--box-shadow);
     margin-bottom: 16px;
-    width: 584px;
+    width: 585px;
     margin-right: 12px;
     height: 180px;
     box-sizing: border-box;
@@ -149,6 +160,11 @@ main {
     border: 0;
 }
 
+.primary-button:hover {
+    background-color: #c92121;
+    transition: 0.3s;
+}
+
 .secondary-button {
     background-color: var(--grayt-light);
     color: var(--primary-main);
@@ -166,7 +182,12 @@ main {
     align-items: center;
 }
 
-input {
+.secondary-button:hover {
+    background-color: #eaeaea;
+    transition: 0.3s;
+}
+
+.input {
     padding: 11px;
     padding-right: 16px;
     padding-left: 16px;
@@ -177,6 +198,18 @@ input {
     background-color: var(--grayt-light);
     border-radius: var(--border-radius);
     border: 0;
+}
+
+.input:focus{
+    outline: var(--primary-main) solid 2px;
+}
+
+.checkboxarea {
+    padding: 11px;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: var(--grayt-light);
+    border-radius: var(--border-radius);
 }
 
 select {
@@ -196,15 +229,6 @@ label {
     color: var(--gray-text);
 }
 
-input::focused {
-    border-color: var(--primary-main);
-}
-
 .success {
     color: rgb(26, 198, 60);
 }
-/* <!-- // document.querySelector("[name='delete']").addEventListener("change", function () {
-    //     document.getElementsByName(
-    //         "name"
-    //     )[0].value = (`{{ data[${this.value}].name }}`);
-    // }); --> */

@@ -3,20 +3,20 @@
 {% block main %}
     <form method="POST">
         <label>Название лекарства<br>
-            <input name="name" style="margin-bottom: 24px; margin-top: 8px; width: 520px;" type="text" placeholder="Например: Гематоген"><br>
+            <input class="input" name="name" style="margin-bottom: 24px; margin-top: 8px; width: 520px;" type="text" placeholder="Например: Гематоген"><br>
         </label>
         <label>Патентное название лекарства<br>
-            <input name="patented_name" style="margin-bottom: 24px; margin-top: 8px; width: 520px;" type="text" placeholder="Например: Gematogen"><br>
+            <input class="input" name="patented_name" style="margin-bottom: 24px; margin-top: 8px; width: 520px;" type="text" placeholder="Например: Gematogen"><br>
         </label>
         <label>Отпускается только по рецепту
             <input style="margin-bottom: 32px;" name="recipe" type="checkbox"><br>
         </label>
         <div style="display: flex;">
             <label>Цена, руб.<br>
-                <input name="price" type="number" style="width: 236px; margin-bottom: 24px; margin-top: 8px;" placeholder="Например: 500" min="1">
+                <input class="input" name="price" type="number" style="width: 236px; margin-bottom: 24px; margin-top: 8px;" placeholder="Например: 500" min="1">
             </label>
             <label style="margin-left: 16px;">Количество, шт.<br>
-                <input name="count" type="number" style="width: 236px; margin-bottom: 24px; margin-top: 8px;" placeholder="Например: 20" min="0">
+                <input class="input" name="count" type="number" style="width: 236px; margin-bottom: 24px; margin-top: 8px;" placeholder="Например: 20" min="0">
             </label>
         </div>
         <div class="errors">{{ errors }}</div><br>

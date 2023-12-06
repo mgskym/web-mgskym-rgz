@@ -2,18 +2,21 @@
 
 {% block main %}
     <form class="search-area" method="POST">
-        <input name="name" style="width: 320px; margin-right: 4px;" type="text" placeholder="Введите название лекарства">
-        <input name="price_from" style="width: 120px; margin-right: 4px;" type="number" placeholder="Цена от" min="0" max="5000">
-        <input name="price_to" style="width: 120px; margin-right: 4px;" type="number" placeholder="Цена до" min="0" max="5000">
-        <label style="margin-left: 16px; ">
-            Только по рецепту
-            <input style="margin-right: 32px;" name="recipe" type="checkbox">
-        </label>
+        <input class="input" name="name" style="width: 486px; margin-right: 4px;" type="text" placeholder="Введите название лекарства">
+        <input class="input" name="price_from" style="width: 120px; margin-right: 4px;" type="number" placeholder="Цена от" min="0" max="5000">
+        <input class="input" name="price_to" style="width: 120px; margin-right: 4px;" type="number" placeholder="Цена до" min="0" max="5000">
+        <div class="checkboxarea" style="width: 176px; display: inline-block; margin-right: 8px;">
+            <label style="color: #1a1a1a; display: flex;">
+                Только по рецепту
+                <input style="margin-left: 12px;" name="recipe" type="checkbox">
+            </label>
+        </div>
+        
         <button type="submit" class="primary-button">Найти</button>
     </form>
     {% if data %}
         <div style="margin-bottom: 20px; color: #b3b3b3;">Результатов: {{ res_count }}</div>
-        <div class="cards">
+        <div id="cards" class="cards" style="height: 980px;">
             {% for i in data %}
                 <div class="card">
                     <div>
@@ -30,12 +33,24 @@
                                 <div style="color: #286fe1;">Только по рецепту</div>
                             {% endif %}
                         </div>
-                        <h2 style="margin-top: 16px;">{{ i.price }} ₽</h2>
+                        <h2 style="margin-top: 20px;">{{ i.price }} ₽</h2>
                     </div>
                 </div>
             {% endfor %}
-            <button style="width: 100%; margin-top: 32px; margin-bottom: 64px;" class="secondary-button">Показать ещё</button>
         </div>
+        {% if len_data > 10 %}
+            <button id="expand_list" style="width: 100%; margin-top: 24px; margin-bottom: 64px;" class="secondary-button">Показать ещё</button>
+        {% endif %}
+        <script>
+            document.getElementById("expand_list").addEventListener("click", function() {
+                let items = 10;
+                document.getElementById("cards").style.height = `${parseInt(document.getElementById("cards").style.height) + 980}px`;
+                if (parseInt(document.getElementById("cards").style.height) >= ('{{ len_data }}' / 2 * 196)) {
+                    document.getElementById("cards").style.height = 'none';
+                    document.getElementById("expand_list").style.display = 'none';
+                };
+            });
+        </script>
     {% else %}
         <h2 style="text-align: center; color: #a4a4a4; margin-top: 64px;">Нет результатов</h2>
     {% endif %}
