@@ -191,7 +191,10 @@ def new():
             username = username
         )
     else:
-        id_n = len(medicines.query.all()) + 1
+        all_ids = []
+        for i in  medicines.query.all():
+            all_ids.append(i.id)
+        id_n = max(all_ids) + 1
         name_form = request.form.get("name")
         patent_name_form = request.form.get("patented_name")
         recipe_form = request.form.get("recipe")
@@ -235,9 +238,96 @@ def new():
                 db.session.commit()
                 return redirect("/search")
 
+@app.route("/delete", methods = ['POST', 'GET'])
+@login_required
+def delete():
+    username = (users.query.filter_by(id=current_user.id).first()).username
+    data = medicines.query.all()
+    id_form = request.form.get("delete")
+    if request.method == 'GET':
+        return render_template("delete.html",
+            page_title = 'Удаление лекарств',
+            is_logged = True,
+            username = username,
+            data = data
+        )
+    else:
+        deletedMedicine = medicines.query.filter_by(id=id_form).first()
+        db.session.delete(deletedMedicine)
+        db.session.commit()
 
+        return redirect("/delete", code=302)
 
-        
+@app.route("/edit", methods = ['POST', 'GET'])
+@login_required
+def edit_s():
+    username = (users.query.filter_by(id=current_user.id).first()).username
+    data = medicines.query.all()
+    id_form = request.form.get("edit_select")
+    if request.method == 'GET':
+        return render_template("edit_selection.html",
+            page_title = 'Редактирование лекарств',
+            is_logged = True,
+            username = username,
+            data = data
+        )
+    else:
+        medicine_id_edit = (medicines.query.filter_by(id=id_form).first()).id
+        return redirect(f"/edit/{medicine_id_edit}", code=302)
+
+@app.route("/edit/<string:medicine_id_edit>", methods = ['POST', 'GET'])
+def edit(medicine_id_edit):
+    username = (users.query.filter_by(id=current_user.id).first()).username
+    data_edit = medicines.query.filter_by(id=medicine_id_edit).first()
+    if request.method == 'GET':
+        return render_template("edit.html",
+            page_title = f'Редактирование лекарства "{data_edit.name}"',
+            is_logged = True,
+            username = username,
+            data = data_edit
+        )
+    else:
+        name_form = request.form.get("name")
+        patent_name_form = request.form.get("patented_name")
+        recipe_form = request.form.get("recipe")
+        if recipe_form is None:
+            recipe_form = False
+        else:
+            recipe_form = True
+        price_form = request.form.get("price")
+        if price_form != '':
+            price_form = float(price_form)
+        count_form = request.form.get("count")
+        if name_form == '' or patent_name_form == '' or recipe_form == '' or count_form == '':
+            errors = 'Заполните все поля!'
+            return render_template("edit.html",
+                page_title = f'Редактирование лекарства "{data_edit.name}"',
+                is_logged = True,
+                username = username,
+                errors = errors,
+                data = data_edit
+            )
+        else:
+            isExist = medicines.query.filter_by(name=name_form).first()
+            if isExist is not None and isExist.name != name_form:
+                errors = 'Лекарство с таким названием уже существует!'
+                return render_template("edit.html",
+                    page_title = f'Редактирование лекарства "{data_edit.name}"',
+                    is_logged = True,
+                    username = username,
+                    errors = errors,
+                    data = data_edit
+                )
+            else:
+                data_edit.name = name_form
+                data_edit.patented_name = patent_name_form
+                data_edit.recipe_only = recipe_form
+                data_edit.price = price_form
+                data_edit.count = count_form
+
+                db.session.add(data_edit)
+                db.session.commit()
+                return redirect("/search")
 
         
 

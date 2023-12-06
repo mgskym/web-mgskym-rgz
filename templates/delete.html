@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <form method="POST">
+        <label>Лекарство<br>
+                <select name="delete" style="margin-bottom: 24px; margin-top: 8px; width: 520px;" placeholder="Выберите лекарство">
+                    {% for i in data %}
+                        <option value="{{ i.id }}">{{ i.name }}</option>
+                    {% endfor %}
+                </select><br>
+        </label>
+        <div class="success">{{ success }}</div><br>
+        <button class="primary-button" style="width: 520px; margin-top: 24px;" type="submit">Удалить</button>
+    </form>
+{% endblock %}

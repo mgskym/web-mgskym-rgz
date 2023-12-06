@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <form method="POST">
+        <label>Редактируемое лекарство<br>
+            <select name="edit_select" style="margin-top: 8px; width: 340px; margin-right: 16px;" placeholder="Выберите лекарство">
+                {% for i in data %}
+                    <option value="{{ i.id }}">{{ i.name }}</option>
+                {% endfor %}
+            </select><br>
+        </label>
+        <button class="primary-button" style="width: 340px; margin-top: 24px;" type="submit">Выбрать</button>
+    </form>
+{% endblock %}

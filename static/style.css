@@ -115,7 +115,7 @@ main {
     margin-bottom: 16px;
     width: 584px;
     margin-right: 12px;
-    height: 200px;
+    height: 180px;
     box-sizing: border-box;
 }
 
@@ -152,16 +152,34 @@ main {
 .secondary-button {
     background-color: var(--grayt-light);
     color: var(--primary-main);
-    padding: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-right: 16px;
+    padding-left: 16px;
     font-family: 'Montserrat';
     font-size: 15px;
     line-height: 24px;
     font-weight: 600;
     border-radius: var(--border-radius);
     border: 0;
+    text-align: center;
+    align-items: center;
 }
 
 input {
+    padding: 11px;
+    padding-right: 16px;
+    padding-left: 16px;
+    font-family: 'Montserrat';
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 500;
+    background-color: var(--grayt-light);
+    border-radius: var(--border-radius);
+    border: 0;
+}
+
+select {
     padding: 11px;
     padding-right: 16px;
     padding-left: 16px;
@@ -181,3 +199,12 @@ label {
 input::focused {
     border-color: var(--primary-main);
 }
+
+.success {
+    color: rgb(26, 198, 60);
+}
+/* <!-- // document.querySelector("[name='delete']").addEventListener("change", function () {
+    //     document.getElementsByName(
+    //         "name"
+    //     )[0].value = (`{{ data[${this.value}].name }}`);
+    // }); --> */
