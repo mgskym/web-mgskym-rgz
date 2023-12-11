@@ -32,17 +32,23 @@ def load_users(user_id):
 
 @app.route("/")
 @app.route("/index")
+@login_required
 def start():
-    return redirect("/search",code=302)
+    return redirect("/search", code=302)
 
 @app.route("/check")
+@login_required
 def check_all():
-    users_list = users.query.all()
-    medicines_list = medicines.query.all()
-    print(users_list)
-    print()
-    print(medicines_list)
-    return "result in console!"
+    is_admin = (users.query.filter_by(id=current_user.id).first()).is_admin
+    if is_admin:
+        users_list = users.query.all()
+        medicines_list = medicines.query.all()
+        print(users_list)
+        print()
+        print(medicines_list)
+        return "result in console!"
+    else:
+        return redirect("/search", code=302)
 
 @app.route("/search", methods=['POST', 'GET'])
 @login_required
@@ -73,12 +79,20 @@ def search():
             recipe = False
         else:
             recipe = True
-        data = medicines.query.filter(
-                medicines.price >= price_from,
-                medicines.price <= price_to,
-                medicines.name.ilike(f'%{name}%'),
-                medicines.recipe_only == recipe
-            ).all()
+        if recipe:
+            data = medicines.query.filter(
+                    medicines.price >= price_from,
+                    medicines.price <= price_to,
+                    medicines.name.ilike(f'%{name}%'),
+                    medicines.recipe_only == recipe
+                ).all()
+        else:
+            data = medicines.query.filter(
+                    medicines.price >= price_from,
+                    medicines.price <= price_to,
+                    medicines.name.ilike(f'%{name}%')
+                ).all()
+
         res_count = len(data)
 
         return render_template(
@@ -184,42 +198,34 @@ def logout():
 @app.route("/new", methods = ['POST', 'GET'])
 @login_required
 def new():
-    username = (users.query.filter_by(id=current_user.id).first()).username
-    errors = ''
-    if request.method == 'GET':
-        return render_template("new.html",
-            page_title = 'Добавление лекарства',
-            is_logged = True,
-            username = username
-        )
-    else:
-        all_ids = []
-        for i in  medicines.query.all():
-            all_ids.append(i.id)
-        id_n = max(all_ids) + 1
-        name_form = request.form.get("name")
-        patent_name_form = request.form.get("patented_name")
-        recipe_form = request.form.get("recipe")
-        if recipe_form is None:
-            recipe_form = False
-        else:
-            recipe_form = True
-        price_form = request.form.get("price")
-        if price_form != '':
-            price_form = float(price_form)
-        count_form = request.form.get("count")
-        if name_form == '' or patent_name_form == '' or recipe_form == '' or count_form == '' or price_form == '':
-            errors = 'Заполните все поля!'
+    is_admin = (users.query.filter_by(id=current_user.id).first()).is_admin
+    if is_admin:
+        username = (users.query.filter_by(id=current_user.id).first()).username
+        errors = ''
+        if request.method == 'GET':
             return render_template("new.html",
                 page_title = 'Добавление лекарства',
                 is_logged = True,
-                username = username,
-                errors = errors
+                username = username
             )
         else:
-            isExist = medicines.query.filter_by(name=name_form).first()
-            if isExist is not None:
-                errors = 'Лекарство с таким названием уже существует!'
+            all_ids = []
+            for i in  medicines.query.all():
+                all_ids.append(i.id)
+            id_n = max(all_ids) + 1
+            name_form = request.form.get("name")
+            patent_name_form = request.form.get("patented_name")
+            recipe_form = request.form.get("recipe")
+            if recipe_form is None:
+                recipe_form = False
+            else:
+                recipe_form = True
+            price_form = request.form.get("price")
+            if price_form != '':
+                price_form = float(price_form)
+            count_form = request.form.get("count")
+            if name_form == '' or patent_name_form == '' or recipe_form == '' or count_form == '' or price_form == '':
+                errors = 'Заполните все поля!'
                 return render_template("new.html",
                     page_title = 'Добавление лекарства',
                     is_logged = True,
@@ -227,92 +233,103 @@ def new():
                     errors = errors
                 )
             else:
-                newMedicine = medicines(
-                    id = id_n,
-                    name = name_form,
-                    patented_name = patent_name_form,
-                    recipe_only = recipe_form,
-                    price = price_form,
-                    count = count_form
-                )
+                isExist = medicines.query.filter_by(name=name_form).first()
+                if isExist is not None:
+                    errors = 'Лекарство с таким названием уже существует!'
+                    return render_template("new.html",
+                        page_title = 'Добавление лекарства',
+                        is_logged = True,
+                        username = username,
+                        errors = errors
+                    )
+                else:
+                    newMedicine = medicines(
+                        id = id_n,
+                        name = name_form,
+                        patented_name = patent_name_form,
+                        recipe_only = recipe_form,
+                        price = price_form,
+                        count = count_form
+                    )
 
-                db.session.add(newMedicine)
-                db.session.commit()
-                return redirect("/search")
+                    db.session.add(newMedicine)
+                    db.session.commit()
+                    return redirect("/search")
+    else:
+        return redirect("/search")
 
 @app.route("/delete", methods = ['POST', 'GET'])
 @login_required
 def delete():
+    is_admin = (users.query.filter_by(id=current_user.id).first()).is_admin
     username = (users.query.filter_by(id=current_user.id).first()).username
-    data = medicines.query.all()
-    id_form = request.form.get("delete")
-    if request.method == 'GET':
-        return render_template("delete.html",
-            page_title = 'Удаление лекарств',
-            is_logged = True,
-            username = username,
-            data = data
-        )
-    else:
-        deletedMedicine = medicines.query.filter_by(id=id_form).first()
-        db.session.delete(deletedMedicine)
-        db.session.commit()
+    if is_admin:
+        data = medicines.query.all()
+        id_form = request.form.get("delete")
+        if request.method == 'GET':
+            return render_template("delete.html",
+                page_title = 'Удаление лекарств',
+                is_logged = True,
+                username = username,
+                data = data
+            )
+        else:
+            deletedMedicine = medicines.query.filter_by(id=id_form).first()
+            db.session.delete(deletedMedicine)
+            db.session.commit()
 
-        return redirect("/delete", code=302)
+            return redirect("/delete", code=302)
+    else:
+        return redirect("/search")
 
 @app.route("/edit", methods = ['POST', 'GET'])
 @login_required
 def edit_s():
-    username = (users.query.filter_by(id=current_user.id).first()).username
-    data = medicines.query.all()
-    id_form = request.form.get("edit_select")
-    if request.method == 'GET':
-        return render_template("edit_selection.html",
-            page_title = 'Редактирование лекарств',
-            is_logged = True,
-            username = username,
-            data = data
-        )
+    is_admin = (users.query.filter_by(id=current_user.id).first()).is_admin
+    if is_admin:
+        username = (users.query.filter_by(id=current_user.id).first()).username
+        data = medicines.query.all()
+        id_form = request.form.get("edit_select")
+        if request.method == 'GET':
+            return render_template("edit_selection.html",
+                page_title = 'Редактирование лекарств',
+                is_logged = True,
+                username = username,
+                data = data
+            )
+        else:
+            medicine_id_edit = (medicines.query.filter_by(id=id_form).first()).id
+            return redirect(f"/edit/{medicine_id_edit}", code=302)
     else:
-        medicine_id_edit = (medicines.query.filter_by(id=id_form).first()).id
-        return redirect(f"/edit/{medicine_id_edit}", code=302)
+        return redirect("/search")
 
 @app.route("/edit/<string:medicine_id_edit>", methods = ['POST', 'GET'])
 def edit(medicine_id_edit):
-    username = (users.query.filter_by(id=current_user.id).first()).username
-    data_edit = medicines.query.filter_by(id=medicine_id_edit).first()
-    if request.method == 'GET':
-        return render_template("edit.html",
-            page_title = f'Редактирование лекарства "{data_edit.name}"',
-            is_logged = True,
-            username = username,
-            data = data_edit
-        )
-    else:
-        name_form = request.form.get("name")
-        patent_name_form = request.form.get("patented_name")
-        recipe_form = request.form.get("recipe")
-        if recipe_form is None:
-            recipe_form = False
-        else:
-            recipe_form = True
-        price_form = request.form.get("price")
-        if price_form != '':
-            price_form = float(price_form)
-        count_form = request.form.get("count")
-        if name_form == '' or patent_name_form == '' or recipe_form == '' or count_form == '' or price_form == '':
-            errors = 'Заполните все поля!'
+    is_admin = (users.query.filter_by(id=current_user.id).first()).is_admin
+    if is_admin:
+        username = (users.query.filter_by(id=current_user.id).first()).username
+        data_edit = medicines.query.filter_by(id=medicine_id_edit).first()
+        if request.method == 'GET':
             return render_template("edit.html",
                 page_title = f'Редактирование лекарства "{data_edit.name}"',
                 is_logged = True,
                 username = username,
-                errors = errors,
                 data = data_edit
             )
         else:
-            isExist = medicines.query.filter_by(name=name_form).first()
-            if isExist is not None and isExist.name != name_form:
-                errors = 'Лекарство с таким названием уже существует!'
+            name_form = request.form.get("name")
+            patent_name_form = request.form.get("patented_name")
+            recipe_form = request.form.get("recipe")
+            if recipe_form is None:
+                recipe_form = False
+            else:
+                recipe_form = True
+            price_form = request.form.get("price")
+            if price_form != '':
+                price_form = float(price_form)
+            count_form = request.form.get("count")
+            if name_form == '' or patent_name_form == '' or recipe_form == '' or count_form == '' or price_form == '':
+                errors = 'Заполните все поля!'
                 return render_template("edit.html",
                     page_title = f'Редактирование лекарства "{data_edit.name}"',
                     is_logged = True,
@@ -321,15 +338,28 @@ def edit(medicine_id_edit):
                     data = data_edit
                 )
             else:
-                data_edit.name = name_form
-                data_edit.patented_name = patent_name_form
-                data_edit.recipe_only = recipe_form
-                data_edit.price = price_form
-                data_edit.count = count_form
+                isExist = medicines.query.filter_by(name=name_form).first()
+                if isExist is not None and isExist.name != name_form:
+                    errors = 'Лекарство с таким названием уже существует!'
+                    return render_template("edit.html",
+                        page_title = f'Редактирование лекарства "{data_edit.name}"',
+                        is_logged = True,
+                        username = username,
+                        errors = errors,
+                        data = data_edit
+                    )
+                else:
+                    data_edit.name = name_form
+                    data_edit.patented_name = patent_name_form
+                    data_edit.recipe_only = recipe_form
+                    data_edit.price = price_form
+                    data_edit.count = count_form
 
-                db.session.add(data_edit)
-                db.session.commit()
-                return redirect("/search")
+                    db.session.add(data_edit)
+                    db.session.commit()
+                    return redirect("/search")
+    else:
+        return redirect("/search")
 
         
 
