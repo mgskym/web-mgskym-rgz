@@ -195,6 +195,27 @@ def logout():
     logout_user()
     return redirect("/login")
 
+@app.route("/delete_account", methods = ['POST', 'GET'])
+@login_required
+def delete_account():
+    is_admin = (users.query.filter_by(id=current_user.id).first()).is_admin
+    if is_admin:
+        return redirect("/search")
+    else:
+        username = (users.query.filter_by(id=current_user.id).first()).username
+        if request.method == 'GET':
+            return render_template("delete_account.html",
+                page_title = 'Удаление аккаунта',
+                is_logged = True,
+                username = username
+            )
+        else:
+            deletedUser = users.query.filter_by(id=current_user.id).first()
+            logout_user()
+            db.session.delete(deletedUser)
+            db.session.commit()
+            return redirect("/login", code = 302)
+
 @app.route("/new", methods = ['POST', 'GET'])
 @login_required
 def new():

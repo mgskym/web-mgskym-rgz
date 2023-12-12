@@ -41,7 +41,7 @@ h1 {
     font-size: 36px;
     font-weight: 700;
     margin-bottom: 32px;
-    margin-top: 64px;
+    margin-top: 32px;
     line-height: 56px;
 }
 
@@ -85,7 +85,7 @@ header {
     font-size: 18px;
     font-weight: 600;
     color: var(--base-text);
-    margin-right: 24px;
+    margin-right: 16px;
 }
 
 .logo {
@@ -231,4 +231,9 @@ label {
 
 .success {
     color: rgb(26, 198, 60);
+}
+
+.copyright {
+    margin-top: 28px;
+    color: var(--gray-text);
 }
